@@ -1,11 +1,50 @@
-<% include includes/header %>
-
-<div class="container">
-    <p>Home page</p>
-    
-    <a href="/campgrounds">View Campgrounds</a>
-
-
-</div>
-
-<% include includes/footer %>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>YelpCamp</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="/jquery/jquery.js"></script>
+        <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+        <link href="/css/landing.css" rel="stylesheet">
+    </head>
+    <body>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/campgrounds">YelpCamp</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <% if(!currentUser){ %>
+                            <li><a href="/login">Login</a></li>
+                            <li><a href="/register">Register</a></li>
+                        <% }else{ %>
+                            <li><a href="#">Logged in as <%= currentUser.username %></a></li>
+                            <li><a href="/logout">Logout</a></li>
+                        <% } %>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container">
+            <% if(error && error.length > 0){ %>
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="alert alert-danger" role="alert">
+                        <%= error %>
+                    </div>
+                </div>
+            <% } %>
+            <% if(success && success.length > 0){ %>
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="alert alert-success" role="alert">
+                        <%= success %>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+        <div class="landing-center">
+            <h1 class="white">Welcome to YelpCamp</h1>
+            <a href="/campgrounds" class="btn btn-success btn-lg">View All Campgrounds</a>
+        </div>
+    </body>
+</html>

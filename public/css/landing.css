@@ -1,0 +1,19 @@
+body{
+    background: url(/images/landing1.jpg) no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.white{
+    color:white;
+}
+
+.landing-center{
+    height: 100%;
+    width: 100%;
+    margin: 20% auto;
+    vertical-align: middle;
+    text-align: center;
+}
