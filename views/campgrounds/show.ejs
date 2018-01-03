@@ -1,0 +1,55 @@
+<% include ../includes/header %>
+
+<div class="container">
+    <div class="col-md-3">
+        <p class="lead"><%= campground.name %></p>
+        <div class="list-group">
+            <li class="list-group-item">Item 1</li>
+            <li class="list-group-item">Item 2</li>
+            <li class="list-group-item">Item 3</li>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="thumbnail">
+            <img class="img-responsive image-full" src="<%= campground.image %>" />
+            <div class="caption-full">
+                <% if(currentUser && campground.author.id.equals(currentUser.id)){ %>    
+                    <a class="btn btn-xs btn-warning" href="/campgrounds/<%= campground._id %>/edit">Edit</a>
+                    <form class="form-inline" name="deleteCampground" action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST">    
+                        <input type="submit" class="btn btn-xs btn-danger" href="/campgrounds/<%= campground._id %>/delete" value="Delete" />
+                    </form>
+                <% } %>
+                <h4 class="pull-right">$2.99/night</h4>
+                <em>Submitted by <%= campground.author.username %></em>
+                <p><%= campground.description %></p>
+            </div>
+        </div>
+        
+        <div class="well">
+            <div class="row">
+                <h4 class="pull-left">Reviews and comments</h4>
+                <a class="btn btn-success pull-right" href="/campgrounds/<%= campground._id %>/comments/new">Add Comment</a>
+            </div>
+            <% campground.comments.forEach(function(comment){  %>
+                <div class="row margin-top">
+                    
+                    <strong><%= comment.author.username %>:</strong>
+                    <div class="pull-right">10 days ago</div>
+                    <%= comment.text %> <br />
+                    <% if(currentUser && comment.author.id.equals(currentUser._id)){ %>
+                        <a href="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>/edit">Edit</a>
+                        <form class="form-inline" action="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>/delete?_method=DELETE" method="POST">
+                            <input class="btn btn-xs btn-danger" type="submit" value="Delete" />
+                        </form>
+                    <% } %>
+                    
+                </div>
+                
+            <% }) %>
+        </div>
+        
+    </div>
+    
+</div>
+
+<% include ../includes/footer %>

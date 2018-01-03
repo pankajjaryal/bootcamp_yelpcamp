@@ -1,0 +1,32 @@
+<% include ../includes/header %>
+
+<div class="container">
+    <header>
+        <div class="jumbotron">
+            <h2>YelpCamp</h2>
+        </div>
+    </header>
+    
+    <div style="width:30%; margin:0 auto;">
+        <h2>Add a new Campground</h2>
+        <form name="addCampground" method="POST" action="/campgrounds">
+            <div class="form-group">
+                <input type="text" class="form-control" name="name" placeholder="Name" required />
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" name="image" placeholder="Image URL" required />
+            </div>
+            <div class="form-group">
+                <textarea class="form-control" name="description" placeholder="Description"></textarea>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-lg btn-primary" name="addCamp" value="Add Campground" />
+                <a href="/campgrounds" class="btn btn-lg btn-default">Go Back</a>
+            </div>
+        </form>
+    </div>
+
+
+</div>
+
+<% include ../includes/footer %>

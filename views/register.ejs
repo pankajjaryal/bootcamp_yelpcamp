@@ -1,0 +1,18 @@
+<% include includes/header %>
+<div class="container">
+    <div class="col-md-4 col-md-offset-4">
+        <h2>Register</h2>
+        <form name="login" method="POST" action="/register">
+            <div class="form-group">
+                <input type="text" class="form-control" name="username" placeholder="Username" required />
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" name="password" placeholder="Password" required />
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-lg btn-primary" name="register" value="Register" />
+            </div>
+        </form>
+    </div>
+</div>
+<% include includes/footer %>

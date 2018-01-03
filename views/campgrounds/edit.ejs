@@ -1,0 +1,32 @@
+<% include ../includes/header %>
+
+<div class="container">
+    <header>
+        <div class="jumbotron">
+            <h2>YelpCamp</h2>
+        </div>
+    </header>
+    
+    <div style="width:30%; margin:0 auto;">
+        <h2>Edit <%= campground.name %></h2>
+        <form name="editCampground" action="/campgrounds/<%= campground._id %>?_method=PUT" method="POST">
+            <div class="form-group">
+                <input type="text" class="form-control" name="campground[name]" value="<%= campground.name %>" required />
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" name="campground[image]" value="<%= campground.image %>" required />
+            </div>
+            <div class="form-group">
+                <textarea class="form-control" name="campground[description]"><%= campground.description %></textarea>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-lg btn-primary" name="addCamp" value="Edit" />
+                <a href="/campgrounds/<%= campground._id %>" class="btn btn-lg btn-default">Go Back</a>
+            </div>
+        </form>
+    </div>
+
+
+</div>
+
+<% include ../includes/footer %>
