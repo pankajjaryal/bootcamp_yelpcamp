@@ -11,8 +11,8 @@ var methodOverride          = require("method-override");
 
 
 //setup mongodb
-//mongoose.connect("mongodb://localhost/yelp_camp", { useMongoClient: true });
-mongoose.connect("mongodb://yelp:yelp@ds135817.mlab.com:35817/yelpcamp_bootcamp", {useMongoClient: true});
+mongoose.connect(process.env.DBURL, { useMongoClient: true });
+//mongoose.connect("mongodb://yelp:yelp@ds135817.mlab.com:35817/yelpcamp_bootcamp", {useMongoClient: true});
 mongoose.Promise = global.Promise;
 
 //use models
