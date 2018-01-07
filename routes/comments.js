@@ -6,7 +6,7 @@ var middlewareObj   = require("../middleware/");
 
 routes.get("/campgrounds/:id/comments/new", middlewareObj.isLoggedIn, function(req, res){
     Campground.findById(req.params.id, function(err, campground){
-        if(err){
+        if(err || !campground){
             req.flash("error", err.message);
             res.redirect("/campgrounds/" + req.params.id);
         }else{
@@ -17,8 +17,9 @@ routes.get("/campgrounds/:id/comments/new", middlewareObj.isLoggedIn, function(r
 
 routes.post("/campgrounds/:id/comments", middlewareObj.isLoggedIn, function(req, res){
    Campground.findById(req.params.id, function(err, campground){
-       if(err){
+       if(err || !campground){
            console.log(err);
+           res.redirect("/campgrounds/" + req.params.id);
        } else {
            Comment.create(req.body.comment, function(err, comment){
                if(err){
