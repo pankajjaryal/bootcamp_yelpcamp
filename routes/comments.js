@@ -44,7 +44,7 @@ routes.post("/campgrounds/:id/comments", middlewareObj.isLoggedIn, function(req,
 
 routes.get("/campgrounds/:camp_id/comments/:comment_id/edit", middlewareObj.checkCommentOwnership, function(req, res){
     Comment.findById(req.params.comment_id, function(err, comment){
-        if(err){
+        if(err || !comment){
             req.flash("error", err.message);
             res.redirect("/campgrounds/" + req.params.camp_id);
         } else {
@@ -56,7 +56,7 @@ routes.get("/campgrounds/:camp_id/comments/:comment_id/edit", middlewareObj.chec
 
 routes.put("/campgrounds/:camp_id/comments/:comment_id", middlewareObj.checkCommentOwnership, function(req, res){
     Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, updatedComment){
-        if(err){
+        if(err || !updatedComment){
             req.flash("error", err.message);
             res.redirect("/campgrounds/" + req.params.camp_id);
         } else {
