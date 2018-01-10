@@ -19,7 +19,7 @@
                         <input type="submit" class="btn btn-xs btn-danger" href="/campgrounds/<%= campground._id %>/delete" value="Delete" />
                     </form>
                 <% } %>
-                <h4 class="pull-right">$2.99/night</h4>
+                <h4 class="pull-right">$<%= campground.price %>/night</h4>
                 <em>Submitted by <%= campground.author.username %></em>
                 <p><%= campground.description %></p>
             </div>

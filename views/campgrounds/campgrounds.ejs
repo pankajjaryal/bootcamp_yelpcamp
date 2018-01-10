@@ -6,9 +6,19 @@
             <h2>YelpCamp</h2>
             <h4>Some of our featured camps</h4>
             <a href="/campgrounds/new" class="btn btn-lg btn-primary" >Add a new Campground</a>
+            <p>
+                <form method="GET" action="/campgrounds" class="form-inline">
+                    <input type="text" name="search" placeholder="Enter campground name to search" class="form-control" />
+                    <input type="submit" value="Search" class="btn btn-default" />
+                </form>
+            </p>
         </div>
     </header>
-    
+    <% if(noMatch.length > 0){ %>
+        <div class="col-md-12">
+            <h4><%= noMatch %></h4>
+        </div>
+    <% } %>
     <div class="row" style="display:flex; flex-wrap:wrap;">
         <% campgrounds.forEach(function(campground){ %>
         <div class="col-md-3 col-sm-4">

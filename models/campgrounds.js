@@ -3,6 +3,8 @@ var mongoose = require("mongoose");
 var campgroundSchema = new mongoose.Schema({
    name: String,
    image: String,
+   imageUpload: String,
+   price: Number,
    description: String,
    author: {
             id: {
@@ -10,7 +12,7 @@ var campgroundSchema = new mongoose.Schema({
                ref:  "User"
             },
             username: String
-   },
+   },          
    comments: [
          {
             type: mongoose.Schema.Types.ObjectId,
