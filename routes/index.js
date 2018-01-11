@@ -26,7 +26,7 @@ router.post("/register", function(req, res){
            req.flash("error", err.message);
            res.redirect("register");
        }else{
-           passport.authenticate('local')(req, res, function(){
+           passport.authenticate('local', { successRedirect: "/campgrounds", failureRedirect: "/login", failureFlash: true })(req, res, function(){
                req.flash("success", "Welcome to Yelpcamp "+ newUser.username);
                res.redirect("/campgrounds");
            });
