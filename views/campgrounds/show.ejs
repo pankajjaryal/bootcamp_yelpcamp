@@ -11,7 +11,13 @@
     </div>
     <div class="col-md-9">
         <div class="thumbnail">
-            <img class="img-responsive image-full" src="<%= campground.image %>" />
+            <% if(campground.image){ %>
+                <img class="img-responsive image-full" src="<%= campground.image %>" />
+            <% } else if (campground.imageUpload) { %>
+                <img class="img-responsive image-full" src="/campgrounds/<%= campground.imageUpload %>" />
+            <% } else { %>
+                <img class="img-responsive image-full" src="/INA.png" />
+            <% } %>
             <div class="caption-full">
                 <% if(currentUser && campground.author.id.equals(currentUser.id)){ %>    
                     <a class="btn btn-xs btn-warning" href="/campgrounds/<%= campground._id %>/edit">Edit</a>
