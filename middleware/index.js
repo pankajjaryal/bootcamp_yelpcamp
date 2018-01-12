@@ -17,7 +17,7 @@ middlewareObj.checkCampgroundOwnership = function(req, res, next){
                 req.flash("error", "Campground not found");
                 res.redirect("/campgrounds");
             } else {
-                if(campground.author.id.equals(req.user._id)){
+                if(campground.author.id.equals(req.user._id) || req.user.isAdmin){
                     req.campground = campground;
                     next();
                 } else {
@@ -37,9 +37,9 @@ middlewareObj.checkCommentOwnership = function(req, res, next){
         Comment.findById(req.params.comment_id, function(err, comment){
             if(err || !comment){
                 req.flash("error", "Comment not found");
-                res.redirect("/campgrounds/" + req.params.capm_id);
+                res.redirect("/campgrounds/" + req.params.camp_id);
             } else {
-                if(comment.author.id.equals(req.user._id)){
+                if(comment.author.id.equals(req.user._id) || req.user.isAdmin){
                     next();
                 } else {
                     req.flash("error", "You are not authorized to do that");

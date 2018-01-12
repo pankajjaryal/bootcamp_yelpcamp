@@ -2,7 +2,7 @@
 
 <div class="container">
     <header>
-        <div class="jumbotron">
+        <div class="jumbotron" style="padding-top:10px; padding-bottom:10px">
             <h2>YelpCamp</h2>
             <h4>Some of our featured camps</h4>
             <a href="/campgrounds/new" class="btn btn-lg btn-primary" >Add a new Campground</a>
@@ -24,8 +24,16 @@
         <div class="col-md-3 col-sm-4">
             <a href="/campgrounds/<%= campground._id %>">
                 <div class="thumbnail">
-                    <image src="<%= campground.image %>"></image>
-                    <div class="caption"><%= campground.name %></div>    
+                    <% if(campground.image){ %>    
+                        <image src="<%= campground.image %>"></image>
+                        <div class="caption"><%= campground.name %></div>    
+                    <% } else if(campground.imageUpload) { %>
+                        <image src="/campgrounds/<%= campground.imageUpload %>"></image>
+                        <div class="caption"><%= campground.name %></div>    
+                    <% } else { %>
+                        <image src="/INA.png"></image>
+                        <div class="caption"><%= campground.name %></div>    
+                    <% } %>
                 </div>
             </a>
         </div>

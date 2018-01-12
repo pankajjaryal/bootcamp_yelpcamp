@@ -40,4 +40,16 @@ router.get("/logout", function(req, res){
    res.redirect("/campgrounds");
 });
 
+router.get("/profile/:username", function(req, res){
+    User.find({username: req.params.username}, function(err, foundUser){
+       if(err || !foundUser){
+           req.flash("User profile not found");
+           res.redirect("/campgrounds");
+       } else {
+           res.send(foundUser);
+       }
+    }); 
+});
+
+
 module.exports = router;

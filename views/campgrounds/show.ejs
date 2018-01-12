@@ -19,7 +19,7 @@
                 <img class="img-responsive image-full" src="/INA.png" />
             <% } %>
             <div class="caption-full">
-                <% if(currentUser && campground.author.id.equals(currentUser.id)){ %>    
+                <% if( (currentUser && campground.author.id.equals(currentUser.id) ) || (currentUser && currentUser.isAdmin) ){ %>    
                     <a class="btn btn-xs btn-warning" href="/campgrounds/<%= campground._id %>/edit">Edit</a>
                     <form class="form-inline" name="deleteCampground" action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST">    
                         <input type="submit" class="btn btn-xs btn-danger" href="/campgrounds/<%= campground._id %>/delete" value="Delete" />
@@ -42,7 +42,7 @@
                     <strong><%= comment.author.username %>:</strong>
                     <div class="pull-right">10 days ago</div>
                     <%= comment.text %> <br />
-                    <% if(currentUser && comment.author.id.equals(currentUser._id)){ %>
+                    <% if( (currentUser && comment.author.id.equals(currentUser._id) ) || (currentUser && currentUser.isAdmin) ){ %>
                         <a href="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>/edit">Edit</a>
                         <form class="form-inline" action="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>/delete?_method=DELETE" method="POST">
                             <input class="btn btn-xs btn-danger" type="submit" value="Delete" />
