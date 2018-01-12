@@ -1,5 +1,6 @@
 var Campground      = require("../models/campgrounds.js");
 var Comment         = require("../models/comments.js");
+var User            = require("../models/users.js");
 var middlewareObj   = {};
 
 middlewareObj.isLoggedIn = function(req, res, next){
@@ -25,7 +26,7 @@ middlewareObj.checkCampgroundOwnership = function(req, res, next){
                     res.redirect("/campgrounds/" + req.params.id);
                 }
             }
-        })
+        });
     } else {
         req.flash("error", "Please login first");
         res.redirect("/login");
@@ -43,14 +44,37 @@ middlewareObj.checkCommentOwnership = function(req, res, next){
                     next();
                 } else {
                     req.flash("error", "You are not authorized to do that");
-                    res.redirect("/campgrounds/" + req.params.capm_id);
+                    res.redirect("/campgrounds/" + req.params.camp_id);
                 }
             }
-        })
+        });
     } else {
         req.flash("error", "Please login first");
         res.redirect("/login");
     }
+}
+
+middlewareObj.checkCurrentuser = function(req, res, next){
+    if(req.isAuthenticated()){
+        User.findOne({username: req.params.username}, function(err, foundUser){
+            if(err || !foundUser){
+                req.flash("error", "User not found");
+                res.redirect("/profile/" + req.params.username);
+            } else {
+                if(foundUser._id.equals(req.user._id)){
+                    req.user = foundUser;
+                    next();
+                } else {
+                    req.flash("error", "You are not authorized to do that");
+                    res.redirect("/profile/" + foundUser.username);   
+                }
+            }
+        });
+    } else {
+        req.flash("error", "Please login first");
+        res.redirect("/login"); 
+    } 
+
 }
 
 module.exports = middlewareObj;

@@ -1,7 +1,20 @@
-var express     = require("express");
-var router      = express.Router();
-var passport    = require("passport");
-var User        = require("../models/users");
+var express         = require("express");
+var router          = express.Router();
+var passport        = require("passport");
+var User            = require("../models/users");
+var middlewareObj   = require("../middleware");
+var multer          = require('multer');
+
+//setup multer
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './uploads/users');
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' +file.originalname);
+  }
+});
+var upload = multer({ storage: storage });
 
 router.get("/", function(req, res){
    res.render("home");
@@ -41,15 +54,42 @@ router.get("/logout", function(req, res){
 });
 
 router.get("/profile/:username", function(req, res){
-    User.find({username: req.params.username}, function(err, foundUser){
+    User.findOne({username: req.params.username}, function(err, foundUser){
        if(err || !foundUser){
-           req.flash("User profile not found");
+           req.flash("error", "User profile not found");
            res.redirect("/campgrounds");
        } else {
-           res.send(foundUser);
+           res.render("users/show", {user: foundUser});
        }
     }); 
 });
 
+router.get("/profile/:username/edit", middlewareObj.checkCurrentuser, function(req, res){
+    res.render("users/edit", {user: req.user} );
+});
+
+router.put("/profile/:username", middlewareObj.checkCurrentuser, upload.single('user[profileImage]'), function(req, res){
+    var user = req.body.user;
+    if(req.file){
+        user.profileImage = req.file.filename;
+    }
+    
+    User.findOne({username: req.params.username}, function(err, foundUser){
+        if(err || !foundUser){
+            req.flash("User profile not found");
+            res.redirect("/campgrounds");
+        } else {
+            User.findByIdAndUpdate(foundUser._id, user, function(err, updatedUser){
+                if(err || !updatedUser){
+                    req.flash("User profile not found");
+                    res.redirect("/campgrounds");
+                } else {
+                    req.flash("success", "Profile updated successfully");
+                    res.redirect("/profile/" + updatedUser.username);
+               }
+            });
+        }
+    })
+});
 
 module.exports = router;
