@@ -33,8 +33,10 @@ app.use('/bootstrap', express.static(__dirname + '/node_modules/bootstrap/dist/'
 app.use(express.static(__dirname + '/public'));
 app.use(express.static(__dirname + '/uploads'));
 app.use(methodOverride('_method'));
+
 //use flash messages
 app.use(flash());
+
 //order of sessions is very important, initialize express session first
 app.use(expressSession({
     secret: "Krishvi",
