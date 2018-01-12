@@ -73,7 +73,7 @@ router.put("/profile/:username", middlewareObj.checkCurrentuser, upload.single('
     if(req.file){
         user.profileImage = req.file.filename;
     }
-    
+    //first we have to find user id from username and then use findByIdAndUpdate mongoose function to update user profile
     User.findOne({username: req.params.username}, function(err, foundUser){
         if(err || !foundUser){
             req.flash("User profile not found");
