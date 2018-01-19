@@ -15,10 +15,10 @@ var storage = multer.diskStorage({
 });
 var upload = multer({ storage: storage });
 
-router.get("/campgrounds/:page", function(req, res){
+router.get("/campgrounds", function(req, res){
     
     var perPage = 4;
-    var page = req.params.page || 1;
+    var page = req.query.page || 1;
     var noMatch = "";
     if(req.query.search && req.query.search.trim().length > 0){
         var regex = new RegExp(escapeRegex(req.query.search), 'gi');
@@ -36,23 +36,23 @@ router.get("/campgrounds/:page", function(req, res){
                 res.render("campgrounds/campgrounds", {
                    campgrounds: camps,
                    current: page,
-                   pages: Match.ceil(camps.length/perPage),
+                   pages: Math.ceil(camps.length/perPage),
                    noMatch: noMatch
                 });
            }
         });
     } else {
-        console.log('enter');
+        
         Campground
         .find({})
         .skip((perPage * page ) - perPage)
         .limit(perPage)
         .exec(function(err, camps){
             if (err || !camps){
-                console.log('enter1');
+                
                 console.log (err);
             } else {
-                console.log('enter2');
+                
                 Campground.count().exec(function(err, count){
                     if (err){
                         console.log(err);
@@ -60,7 +60,8 @@ router.get("/campgrounds/:page", function(req, res){
                         res.render("campgrounds/campgrounds", {
                             campgrounds: camps,
                             current: page,
-                            pages: Math.ceil(count/perPage)
+                            pages: Math.ceil(count/perPage),
+                            noMatch: noMatch
                         });
                     }
                 });
