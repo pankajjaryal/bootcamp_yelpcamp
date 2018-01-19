@@ -15,32 +15,58 @@ var storage = multer.diskStorage({
 });
 var upload = multer({ storage: storage });
 
-router.get("/campgrounds", function(req, res){
+router.get("/campgrounds/:page", function(req, res){
+    var perPage = 4;
+    var page = req.params.page || 1;
     var noMatch = "";
     if(req.query.search && req.query.search.trim().length > 0){
         var regex = new RegExp(escapeRegex(req.query.search), 'gi');
-        Campground.find({name: regex}, function(err, camps){
+        Campground.find({name: regex})
+        .skip((perPage * (page - 1)))
+        .limit(perPage)
+        .exec(function(err, camps){
            if(err){
                console.log(err);
            } else {
                if(camps.length == 0){
                     noMatch = "No campground found within this name, please try again!";
                }
-                res.render("campgrounds/campgrounds", {campgrounds: camps, noMatch: noMatch});
+               
+                res.render("campgrounds/campgrounds", {
+                   campgrounds: camps,
+                   current: page,
+                   pages: Match.ceil(camps.length/perPage),
+                   noMatch: noMatch
+                });
            }
         });
     } else {
-        Campground.find({}, function(err, camps){
-           if(err){
-               console.log(err);
-           } else {
-               res.render("campgrounds/campgrounds", {campgrounds: camps, noMatch: noMatch});
-           }
+        Campground
+        .find({})
+        .skip((perPage * (page - 1)))
+        .limit(perPage)
+        .exec(function(err, camps){
+            if (err || !camps){
+                console.log (err);
+            } else {
+                Campground.count().exec(function(err, count){
+                    if (err){
+                        console.log(err);
+                    } else {
+                        res.render("campgrounds/campgrounds", {
+                            campgrounds: camps,
+                            current: page,
+                            pages: Math.ceil(count/perPage)
+                        });
+                    }
+                });
+            }
         });
     }
     
 });
 
+//add a new campground route
 router.post("/campgrounds", middlewareObj.isLoggedIn, upload.single('imageUpload'), function(req, res){
     var name = req.body.name;
     var image = req.body.image;
