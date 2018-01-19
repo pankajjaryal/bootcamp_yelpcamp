@@ -16,6 +16,7 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 router.get("/campgrounds/:page", function(req, res){
+    
     var perPage = 4;
     var page = req.params.page || 1;
     var noMatch = "";
@@ -41,14 +42,17 @@ router.get("/campgrounds/:page", function(req, res){
            }
         });
     } else {
+        console.log('enter');
         Campground
         .find({})
-        .skip((perPage * (page - 1)))
+        .skip((perPage * page ) - perPage)
         .limit(perPage)
         .exec(function(err, camps){
             if (err || !camps){
+                console.log('enter1');
                 console.log (err);
             } else {
+                console.log('enter2');
                 Campground.count().exec(function(err, count){
                     if (err){
                         console.log(err);
