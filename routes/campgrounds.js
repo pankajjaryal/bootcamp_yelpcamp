@@ -19,6 +19,9 @@ router.get("/campgrounds", function(req, res){
     
     var perPage = 4;
     var page = req.query.page || 1;
+    if(page < 1){
+        page = 1;
+    }
     var noMatch = "";
     if(req.query.search && req.query.search.trim().length > 0){
         var regex = new RegExp(escapeRegex(req.query.search), 'gi');
@@ -32,7 +35,7 @@ router.get("/campgrounds", function(req, res){
                if(camps.length == 0){
                     noMatch = "No campground found within this name, please try again!";
                }
-               
+               console.log(req.originalUrl);
                 res.render("campgrounds/campgrounds", {
                    campgrounds: camps,
                    current: page,
@@ -49,7 +52,6 @@ router.get("/campgrounds", function(req, res){
         .limit(perPage)
         .exec(function(err, camps){
             if (err || !camps){
-                
                 console.log (err);
             } else {
                 
@@ -57,6 +59,7 @@ router.get("/campgrounds", function(req, res){
                     if (err){
                         console.log(err);
                     } else {
+                        
                         res.render("campgrounds/campgrounds", {
                             campgrounds: camps,
                             current: page,
@@ -96,7 +99,7 @@ router.post("/campgrounds", middlewareObj.isLoggedIn, upload.single('imageUpload
     res.redirect("/campgrounds");
 });
 
-router.get("/campgrounds/new", middlewareObj.isLoggedIn, function(req, res){
+router.get("/campgrounds/new", middlewareObj.isLoggedIn, (req, res) => {
    res.render("campgrounds/new");
 });
 
