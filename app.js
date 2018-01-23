@@ -63,6 +63,8 @@ app.use(campgrounds);
 app.use(comments);
 app.use(index);
 
-app.listen(process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 1, process.env.IP || process.env.OPENSHIFT_NODEJS_IP || 65535, function(){
-    console.log("App started: YelpCamp");
-});
+app.listen(process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080, 
+            process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1', 
+            function(){
+                console.log("App started: YelpCamp");
+            });
