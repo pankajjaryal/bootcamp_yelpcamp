@@ -41,6 +41,13 @@
         <% if(pages > 1){ %>
         <div class="container">
             <ul class="pagination">
+                
+                <!-- here I want to show the pagination for next and last 2 pages from current page, so I checked for current page
+                number and added/subtracted 2 to it, if it is not the last or first page. For first and last page we set start and
+                end to 1 and total number of pages. The no. of camps in each page can be changed from campgrounds route. There is a
+                setting for retaining the search string if there is any. And finally we place ... if there the no pf pages increase
+                than +/-2 from current page to signal there are more pages to follow/behind -->
+                
                 <% let end = Number(current) + 2 < Number(pages) ? Number(current) + 2 : Number(pages)  %>
                 <% let start = Number(current) > 2 ? Number(current) - 2 : 1 %>
                 <% if(current - start > 1 && current > 3){ %>
