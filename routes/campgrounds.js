@@ -17,7 +17,7 @@ var upload = multer({ storage: storage });
 
 router.get("/campgrounds", function(req, res){
     
-    var perPage = 4;
+    var perPage = 12;
     var page = req.query.page || 1;
     if(page < 1){
         page = 1;
@@ -33,14 +33,21 @@ router.get("/campgrounds", function(req, res){
                console.log(err);
            } else {
                if(camps.length == 0){
-                    noMatch = "No campground found within this name, please try again!";
+                    noMatch = "No campground found with this name, please try again!";
                }
-               console.log(req.originalUrl);
-                res.render("campgrounds/campgrounds", {
-                   campgrounds: camps,
-                   current: page,
-                   pages: Math.ceil(camps.length/perPage),
-                   noMatch: noMatch
+                Campground.find({name: regex}).count().exec(function(err, count){
+                    if (err){
+                        console.log(err);
+                    } else {
+                        let totalPages = Math.ceil(count/perPage);
+                        res.render("campgrounds/campgrounds", {
+                            campgrounds: camps,
+                            current: page,
+                            pages: totalPages,
+                            searchQuery: req.query.search,
+                            noMatch: noMatch
+                        });
+                    }
                 });
            }
         });
@@ -54,16 +61,16 @@ router.get("/campgrounds", function(req, res){
             if (err || !camps){
                 console.log (err);
             } else {
-                
                 Campground.count().exec(function(err, count){
                     if (err){
                         console.log(err);
                     } else {
-                        
+                        let totalPages = Math.ceil(count/perPage);
                         res.render("campgrounds/campgrounds", {
                             campgrounds: camps,
                             current: page,
-                            pages: Math.ceil(count/perPage),
+                            pages: totalPages,
+                            searchQuery: null,
                             noMatch: noMatch
                         });
                     }
@@ -71,7 +78,6 @@ router.get("/campgrounds", function(req, res){
             }
         });
     }
-    
 });
 
 //add a new campground route

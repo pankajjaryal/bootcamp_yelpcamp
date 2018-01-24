@@ -37,8 +37,46 @@
                 </div>
             </a>
         </div>
-        <% }) %>
+        <% }); %>
+        <% if(pages > 1){ %>
+        <div class="container">
+            <ul class="pagination">
+                <% let end = Number(current) + 2 < Number(pages) ? Number(current) + 2 : Number(pages)  %>
+                <% let start = Number(current) > 2 ? Number(current) - 2 : 1 %>
+                <% if(current - start > 1 && current > 3){ %>
+                    <% if(searchQuery){ %>
+                        <li><a href="/campgrounds/?search=<%= searchQuery %>&page=1">1</a></li>
+                    <% } else { %>
+                        <li><a href="/campgrounds/?page=1">1</a></li>
+                    <% } %>
+                    <li class="disabled"><a>...</a></li>
+                <% } %>
+                <% for(let i = start; i <= end ; i++){ %>
+                    <li 
+                        <% if(Number(current) === i){ %>
+                            class="active"
+                        <% } %>
+                    >
+                    <% if(searchQuery){ %>
+                        <a href="/campgrounds/?search=<%= searchQuery %>&page=<%= i %>"><%= i %></a>
+                    <% } else { %>
+                        <a href="/campgrounds/?page=<%= i %>"><%= i %></a>
+                    <% } %>
+                    </li>
+                <% } %>
+                <% if(pages - current > 2){ %>
+                    <li class="disabled"><a>...</a></li>
+                    <% if(searchQuery){ %>
+                        <li><a href="/campgrounds/?search=<%= searchQuery %>&page=<%= pages %>"><%= pages %></a></li>
+                    <% } else { %>
+                        <li><a href="/campgrounds/?page=<%= pages %>"><%= pages %></a></li>
+                    <% } %>
+                <% } %>
+            </ul>
+        </div>
+        <% } %>
     </div>
+    
 </div>
 
 <% include ../includes/footer %>
